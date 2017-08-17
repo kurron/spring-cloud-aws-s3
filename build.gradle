@@ -30,8 +30,8 @@ description = 'Public REST APIs for obtaining lesson publication information.'
 ext.builtOn = new Date()
 
 ext.coverageExcludes = [
-    'com/transparent/slurpe/api/server/Application',
-    'com/transparent/slurpe/api/server/ApplicationProperties',
+    'org/kurron/s3/Application',
+    'org/kurron/s3/ApplicationProperties',
 ]
 
 apply from: "$rootDir/gradle/repositories.gradle"
