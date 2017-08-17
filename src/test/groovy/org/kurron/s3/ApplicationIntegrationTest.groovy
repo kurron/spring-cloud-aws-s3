@@ -16,10 +16,12 @@
 package org.kurron.s3
 
 import com.amazonaws.services.s3.AmazonS3
+import com.amazonaws.services.s3.transfer.TransferManager
 import org.junit.experimental.categories.Category
 import org.kurron.categories.InboundIntegrationTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.core.io.support.ResourcePatternResolver
 import spock.lang.Specification
 
 /**
@@ -36,6 +38,9 @@ class ApplicationIntegrationTest extends Specification {
     @Autowired
     private AmazonS3 s3
 
+    @Autowired
+    private ResourcePatternResolver resolver
+
     void 'we can load the Spring context'() {
         expect:
         sut
@@ -43,6 +48,12 @@ class ApplicationIntegrationTest extends Specification {
 
     void 'we can contact S3'() {
         expect:
+        def transferManager = new TransferManager( s3 )
+        def resources = resolver.getResources( 's3://transparent-aws-study-group/aws-lambda/*.zip' )
+        def toPrint = resources.collect {
+            "${it.filename} is ${it.contentLength()} bytes in size"
+        }
+        toPrint.each { println it }
         s3
     }
 

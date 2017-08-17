@@ -20,7 +20,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 /**
  * Custom configuration properties that are driven by Spring Boot and its application.yml file.
  */
-@ConfigurationProperties( value = 'slurp-e', ignoreUnknownFields = false )
+@ConfigurationProperties( value = 's3', ignoreUnknownFields = false )
 class ApplicationProperties {
 
     String foo

@@ -1,7 +1,8 @@
 cloud:
     aws:
         region:
-            static: us-west-2
+            auto: false
+            static: us-east-1
 
 spring:
   main:
@@ -11,8 +12,12 @@ spring:
       check-template-location: false
 
 endpoints:
-  health:
     sensitive: false
+    hypermedia:
+        enabled: true
+    docs:
+        curies:
+            enabled: false
 
 server:
   port: 8080
@@ -34,5 +39,5 @@ security:
     enabled: false
     realm: Slurp-E
 
-slurp-e:
+s3:
   foo: bar
