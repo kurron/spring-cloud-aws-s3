@@ -16,6 +16,7 @@
 package org.kurron.s3
 
 import com.amazonaws.services.s3.AmazonS3
+import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.transfer.TransferManager
 import org.junit.experimental.categories.Category
 import org.kurron.categories.InboundIntegrationTest
@@ -46,15 +47,25 @@ class ApplicationIntegrationTest extends Specification {
         sut
     }
 
-    void 'we can contact S3'() {
+    void 'we can read from S3'() {
         expect:
-        def transferManager = new TransferManager( s3 )
         def resources = resolver.getResources( 's3://transparent-aws-study-group/aws-lambda/*.zip' )
         def toPrint = resources.collect {
             "${it.filename} is ${it.contentLength()} bytes in size"
         }
         toPrint.each { println it }
         s3
+    }
+
+    void 'we can write to S3'() {
+        expect:
+        def transferManager = new TransferManager( s3 )
+        def inputStream = new ByteArrayInputStream( new byte[256] )
+        def metadata = new ObjectMetadata()
+        metadata.addUserMetadata( 'some-key', 'some-value' )
+        def job = transferManager.upload( 'transparent-aws-study-group', 'just-a-test.bin', inputStream, metadata )
+        def result = job.waitForUploadResult()
+        println "${result.key} was successfully uploaded to the ${result.bucketName}"
     }
 
 }
