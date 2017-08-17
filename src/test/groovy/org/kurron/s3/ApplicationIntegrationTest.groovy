@@ -17,6 +17,9 @@ package org.kurron.s3
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.ObjectMetadata
+import com.amazonaws.services.s3.model.ObjectTagging
+import com.amazonaws.services.s3.model.PutObjectRequest
+import com.amazonaws.services.s3.model.Tag
 import com.amazonaws.services.s3.transfer.TransferManager
 import org.junit.experimental.categories.Category
 import org.kurron.categories.InboundIntegrationTest
@@ -63,9 +66,14 @@ class ApplicationIntegrationTest extends Specification {
         def inputStream = new ByteArrayInputStream( new byte[256] )
         def metadata = new ObjectMetadata()
         metadata.addUserMetadata( 'some-key', 'some-value' )
-        def job = transferManager.upload( 'transparent-aws-study-group', 'just-a-test.bin', inputStream, metadata )
+        metadata.setContentType( 'application/something-i-made-up' )
+        def tags = new ObjectTagging( [new Tag( 'Project', 'Slurp-E' ), new Tag( 'Creator', 'rkurr@transparent.com' )] )
+        def request = new PutObjectRequest( 'transparent-aws-study-group', 'just-a-test.bin', inputStream, metadata )
+        request.setTagging( tags )
+        def job = transferManager.upload( request )
         def result = job.waitForUploadResult()
         println "${result.key} was successfully uploaded to the ${result.bucketName}"
+        transferManager.shutdownNow()
     }
 
 }
