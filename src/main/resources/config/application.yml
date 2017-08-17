@@ -1,21 +1,14 @@
+cloud:
+    aws:
+        region:
+            static: us-west-2
+
 spring:
   main:
     banner-mode: "off"
   groovy:
     template:
       check-template-location: false
-
-  rabbitmq:
-      host: localhost
-      port: 5672
-      username: guest
-      password: guest
-
-  data:
-      mongodb:
-          database: test
-          host: localhost
-          port: 27017
 
 endpoints:
   health:

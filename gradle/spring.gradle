@@ -38,8 +38,7 @@ processResources {
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-actuator'
-    compile 'org.springframework.boot:spring-boot-starter-amqp'
-    compile 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    compile 'org.springframework.cloud:spring-cloud-aws-autoconfigure'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 

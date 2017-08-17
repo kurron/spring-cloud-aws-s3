@@ -15,12 +15,11 @@
  */
 package org.kurron.s3
 
+import com.amazonaws.services.s3.AmazonS3
 import org.junit.experimental.categories.Category
 import org.kurron.categories.InboundIntegrationTest
-import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.data.mongodb.core.MongoTemplate
 import spock.lang.Specification
 
 /**
@@ -33,24 +32,18 @@ class ApplicationIntegrationTest extends Specification {
     @Autowired
     private Application sut
 
-    @Autowired
-    private RabbitTemplate rabbit
 
     @Autowired
-    private MongoTemplate mongo
+    private AmazonS3 s3
 
     void 'we can load the Spring context'() {
         expect:
         sut
     }
 
-    void 'we can contact RabbitMQ'() {
+    void 'we can contact S3'() {
         expect:
-        rabbit.convertAndSend('exchange', 'routing-key', 'data' )
+        s3
     }
 
-    void 'we can contact MongoDB'() {
-        expect:
-        !mongo.collectionExists( 'should-not-exist' )
-    }
 }
