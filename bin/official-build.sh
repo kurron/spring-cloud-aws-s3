@@ -11,8 +11,7 @@ DOCKER_GROUP_ID=$(cut -d: -f3 < <(getent group docker))
 USER_ID=$(id -u $(whoami))
 GROUP_ID=$(id -g $(whoami))
 WORK_AREA=/work-area
-HOME_DIR=/tmp
-
+HOME_DIR=$(cut -d: -f6 < <(getent passwd ${USER_ID}))
 
 MAJOR=0
 MINOR=0
@@ -26,6 +25,7 @@ CMD="docker run --group-add ${DOCKER_GROUP_ID} \
                 --user=${USER_ID}:${GROUP_ID} \
                 --volume /var/run/docker.sock:/var/run/docker.sock \
                 --volume $(pwd):${WORK_AREA} \
+                --volume ${HOME_DIR}:${HOME_DIR} \
                 --workdir ${WORK_AREA} \
                 kurron/docker-azul-jdk-8-build:latest \
                 ./gradlew -PrunIntegrationTests=true \

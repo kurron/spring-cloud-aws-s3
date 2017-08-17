@@ -9,4 +9,4 @@
 rm -rf build .gradle
 
 # run the official build script with some minor tweaks
-bin/official-build.sh simulation 0
+bin/official-build.sh simulation
