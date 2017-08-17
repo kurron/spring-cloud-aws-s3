@@ -21,6 +21,7 @@ import com.amazonaws.services.s3.model.ObjectTagging
 import com.amazonaws.services.s3.model.PutObjectRequest
 import com.amazonaws.services.s3.model.Tag
 import com.amazonaws.services.s3.transfer.TransferManager
+import groovy.util.logging.Slf4j
 import org.junit.experimental.categories.Category
 import org.kurron.categories.InboundIntegrationTest
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,11 +34,11 @@ import spock.lang.Specification
  **/
 @Category( InboundIntegrationTest ) // this really isn't an inbound test but it will do
 @SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.NONE )
+@Slf4j
 class ApplicationIntegrationTest extends Specification {
 
     @Autowired
     private Application sut
-
 
     @Autowired
     private AmazonS3 s3
@@ -56,7 +57,7 @@ class ApplicationIntegrationTest extends Specification {
         def toPrint = resources.collect {
             "${it.filename} is ${it.contentLength()} bytes in size"
         }
-        toPrint.each { println it }
+        toPrint.each { log.info( it )  }
         s3
     }
 
@@ -72,7 +73,7 @@ class ApplicationIntegrationTest extends Specification {
         request.setTagging( tags )
         def job = transferManager.upload( request )
         def result = job.waitForUploadResult()
-        println "${result.key} was successfully uploaded to the ${result.bucketName}"
+        log.info( "${result.key} was successfully uploaded to the ${result.bucketName}" )
         transferManager.shutdownNow()
     }
 

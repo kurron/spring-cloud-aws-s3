@@ -16,10 +16,8 @@
 package org.kurron.s3
 
 import groovy.util.logging.Slf4j
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 /**
  * This is the entry point into the system.  If run from the command-line, then the main() is called.
@@ -28,17 +26,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  */
 @Slf4j
 @SpringBootApplication
-@EnableConfigurationProperties( ApplicationProperties )
 class Application {
 
     static void main( String[] args ) {
         SpringApplication.run( Application, args )
     }
-
-    /**
-     * Configurable properties used to customize the application.
-     */
-    @Autowired
-    private ApplicationProperties configuration
 
 }

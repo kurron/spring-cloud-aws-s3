@@ -1,5 +1,6 @@
 # Overview
-This project is ...
+This project is just a learning tool to see how much Spring offers in the way of
+Amazon S3 support.
 
 # Guidebook
 
