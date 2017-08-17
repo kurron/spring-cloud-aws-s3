@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.transparent.slurpe.api.server
+package org.kurron.s3
 
 import static org.springframework.amqp.core.Binding.DestinationType.QUEUE
 import groovy.util.logging.Slf4j
