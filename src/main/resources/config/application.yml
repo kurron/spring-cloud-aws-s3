@@ -1,0 +1,45 @@
+spring:
+  main:
+    banner-mode: "off"
+  groovy:
+    template:
+      check-template-location: false
+
+  rabbitmq:
+      host: localhost
+      port: 5672
+      username: guest
+      password: guest
+
+  data:
+      mongodb:
+          database: test
+          host: localhost
+          port: 27017
+
+endpoints:
+  health:
+    sensitive: false
+
+server:
+  port: 8080
+  use-forward-headers: true
+
+info:
+  app:
+    name: ${name}
+    description: ${description}
+    version: ${version}
+    built-on: ${builtOn}
+
+# Override the default security properties, defined in org.springframework.boot.autoconfigure.security.SecurityProperties
+security:
+  user:
+    name: developer
+    password: developer
+  basic:
+    enabled: false
+    realm: Slurp-E
+
+slurp-e:
+  foo: bar

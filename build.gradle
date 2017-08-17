@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2017 Transparent Language. All rights reserved.
+ */
+buildscript {
+    repositories {
+        maven {
+            url = nashuaJvmUrl
+        }
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyPluginVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+group = 'com.transparent.slurpe'
+description = 'Public REST APIs for obtaining lesson publication information.'
+ext.builtOn = new Date()
+
+ext.coverageExcludes = [
+    'com/transparent/slurpe/api/server/Application',
+    'com/transparent/slurpe/api/server/ApplicationProperties',
+]
+
+apply from: "$rootDir/gradle/repositories.gradle"
+apply from: "$rootDir/gradle/spring.gradle"
+apply from: "$rootDir/gradle/version.gradle"
+apply from: "$rootDir/gradle/dependency-exclusions.gradle"
+apply from: "$rootDir/gradle/docker.gradle"
+apply from: "$rootDir/gradle/groovy.gradle"
+apply from: "$rootDir/gradle/codenarc.gradle"
+apply from: "$rootDir/gradle/spock.gradle"
+apply from: "$rootDir/gradle/jacoco.gradle"
+apply from: "$rootDir/gradle/maven-publish.gradle"
+
+dependencies {
+    compile "org.kurron:tools-groovy:${toolsGroovyVersion}"
+}

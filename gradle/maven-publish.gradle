@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) 2017 Transparent Language. All rights reserved.
+ */
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        mavenPublish( MavenPublication ) {
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            if ( 'master' == branch ) {
+                url=releaseURL
+            }
+            else if ( 'development' == branch ) {
+                url=milestoneURL
+            }
+            else if ( 'release-candidate' == branch ) {
+                url=milestoneURL
+            }
+            else {
+                url='Not set - only master, development and release-candiate branches should be published!'
+            }
+            credentials {
+                username=publishUsername
+                password=publishPassword
+            }
+        }
+    }
+}
+
+// conditionally publish artifacts
+if ( 'true' == publishArtifacts && branch in ['master', 'development', 'release-candidate'] ) {
+    defaultTasks << 'publish'
+}
+else {
+    defaultTasks << 'publishToMavenLocal'
+}

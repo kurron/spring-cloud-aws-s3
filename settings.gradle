@@ -1,0 +1,7 @@
+/*
+ * Copyright (c) 2017 Transparent Language.  All rights reserved.
+ */
+
+// this is the only place that the project name is mutable
+rootProject.name = 'spring-cloud-aws-s3
+'

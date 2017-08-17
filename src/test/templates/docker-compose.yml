@@ -1,0 +1,29 @@
+# Intended for use during integration test time
+version: '3'
+services:
+    rabbitmq:
+        image: rabbitmq:management
+        hostname: rabbitmq
+        container_name: "rabbitmq-${projectName}-${branch}-${version}"
+        ports:
+        - "5672"
+        - "15672"
+        environment:
+            RABBITMQ_DEFAULT_USER: guest
+            RABBITMQ_DEFAULT_PASS: guest
+            RABBITMQ_DEFAULT_VHOST: /
+        networks:
+        - "network-${projectName}-${branch}-${version}"
+
+    mongodb:
+        image: mongo
+        hostname: mongodb
+        container_name: "mongodb-${projectName}-${branch}-${version}"
+        ports:
+        - "27017"
+        command: mongod --storageEngine=wiredTiger --notablescan
+        networks:
+        - "network-${projectName}-${branch}-${version}"
+
+networks:
+    "network-${projectName}-${branch}-${version}":

@@ -1,0 +1,55 @@
+/*
+ * Copyright (c) 2017 Transparent Language. All rights reserved.
+ */
+def dockerDirectory = "${buildDir}/docker"
+
+task copyTestDockerFiles( type: Copy, dependsOn: bootRepackage ) {
+    group 'Docker'
+    description = 'Copies the templates files, replacing the templated values as needed'
+    from 'src/test/templates'
+    into "${dockerDirectory}"
+    expand( projectName: project.name,
+            branch: branch,
+            version: version )
+}
+
+build.dependsOn copyTestDockerFiles
+
+// holds the Docker coordinates of the infrastructure
+ext.rabbitPort = 5672
+ext.rabbitHost = '172.17.0.1'
+ext.mongoPort = 27017
+ext.mongoHost = '172.17.0.1'
+
+task startIntegrationTestResources( type: Exec, dependsOn: copyTestDockerFiles ) {
+    group 'Docker'
+    description = 'Launches the containers needed for integration testing'
+    workingDir dockerDirectory
+    doFirst {
+        logger.quiet "Pulling images defined in $dockerDirectory/docker-compose.yml"
+        commandLine 'docker-compose', 'pull', '--parallel'
+        logger.quiet "Starting containers defined in $dockerDirectory/docker-compose.yml"
+        commandLine 'docker-compose', 'up', '-d', '--no-recreate'
+    }
+    doLast {
+        rabbitPort = lookUpPort( "rabbitmq-${project.name}-${branch}-${version}", 5672 )
+        mongoPort = lookUpPort( "mongodb-${project.name}-${branch}-${version}", 27017 )
+    }
+}
+
+static int lookUpPort( String containerName, int containerPort ) {
+    //docker port rabbitmq-api-server-unknown-0.0.0-SNAPSHOT 15672/tcp returns 0.0.0.0:32773
+    def process = "docker port ${containerName} ${containerPort}/tcp".execute()
+    def commandResult = process.text
+    commandResult.split( ':' ).last() as int
+}
+
+task destroyIntegrationTestResources( type: Exec ) {
+    group 'Docker'
+    description = 'Removes the containers needed for integration testing'
+    workingDir dockerDirectory
+    doFirst {
+        logger.quiet "Cleaning up containers, images and volumes defined in $dockerDirectory/docker-compose.yml"
+        commandLine 'docker-compose', 'down'
+    }
+}
