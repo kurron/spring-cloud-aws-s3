@@ -5,8 +5,6 @@
 # arguments
 BRANCH=${1-unspecified}
 PATCH=${2-0}
-ARTIFACTORY_USER=${3-SVNBuild}
-ARTIFACTORY_PASSWORD=${4-Snoopy*09}
 
 DOCKER_VERSION=$(docker --version)
 DOCKER_GROUP_ID=$(cut -d: -f3 < <(getent group docker))
@@ -30,14 +28,11 @@ CMD="docker run --group-add ${DOCKER_GROUP_ID} \
                 --volume $(pwd):${WORK_AREA} \
                 --workdir ${WORK_AREA} \
                 kurron/docker-azul-jdk-8-build:latest \
-                ./gradlew -PpublishArtifacts=true \
-                          -PrunIntegrationTests=true \
+                ./gradlew -PrunIntegrationTests=true \
                           -Pmajor=${MAJOR} \
                           -Pminor=${MINOR} \
                           -Ppatch=${PATCH} \
                           -Pbranch=${BRANCH} \
-                          -PpublishUsername=${ARTIFACTORY_USER} \
-                          -PpublishPassword=${ARTIFACTORY_PASSWORD} \
                           -Duser.home=${HOME_DIR} \
                           --gradle-user-home=${HOME_DIR} \
                           --project-dir=${WORK_AREA} \

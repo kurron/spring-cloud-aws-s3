@@ -43,7 +43,6 @@ apply from: "$rootDir/gradle/groovy.gradle"
 apply from: "$rootDir/gradle/codenarc.gradle"
 apply from: "$rootDir/gradle/spock.gradle"
 apply from: "$rootDir/gradle/jacoco.gradle"
-apply from: "$rootDir/gradle/maven-publish.gradle"
 
 dependencies {
     compile "org.kurron:tools-groovy:${toolsGroovyVersion}"
