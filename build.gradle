@@ -15,9 +15,7 @@
  */
 buildscript {
     repositories {
-        maven {
-            url = nashuaJvmUrl
-        }
+        jcenter()
     }
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:${dependencyPluginVersion}"
