@@ -79,6 +79,11 @@ task allIntegrationTests( type: Test, dependsOn: [build, startIntegrationTestRes
         logger.quiet "Port for MongoDB is ${systemProperties['spring.data.mongodb.port']}"
         systemProperties['spring.data.mongodb.host'] = mongoHost
         logger.quiet "Host for MongoDB is ${systemProperties['spring.data.mongodb.host']}"
+
+        // When running inside Docker, the JVM has a hard time figuring out out what HOME is so we set it
+        // by hand.  Here, we propagate that value to the test JVM.
+        systemProperties['user.home'] = System.properties['user.home'] ?: 'UNKNOWN!'
+        logger.quiet "JVM system property user.home is set to ${systemProperties['user.home']}"
     }
 }
 

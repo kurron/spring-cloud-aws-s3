@@ -15,7 +15,6 @@ GROUP_ID=$(id -g $(whoami))
 WORK_AREA=/work-area
 HOME_DIR=$(cut -d: -f6 < <(getent passwd ${USER_ID}))
 
-
 MAJOR=0
 MINOR=0
 
