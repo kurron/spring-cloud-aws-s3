@@ -5,8 +5,5 @@
 # container and that user/group ids must match yours or the generated files will be
 # owned by the wrong account.
 
-# start fresh
-rm -rf build .gradle
-
 # run the official build script with some minor tweaks
 bin/official-build.sh simulation
